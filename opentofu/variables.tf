@@ -25,3 +25,11 @@ variable "memory_mb" {
   description = "Memoria RAM de cada máquina virtual (MiB)."
   default     = 1024
 }
+
+
+# Rango de la red NAT (con DHCP: acceso desde el equipo y salida a internet)
+variable "red_nat_cidr" {
+  type        = string
+  description = "Rango de la red NAT."
+  default     = "192.168.10.0/24"
+}
