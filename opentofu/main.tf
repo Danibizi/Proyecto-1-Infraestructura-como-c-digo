@@ -28,12 +28,14 @@ resource "libvirt_domain" "web" {
   # Red 1: NAT con DHCP
   network_interface {
     network_id     = libvirt_network.red-nat.id
+    mac            = "52:54:00:aa:00:01"
     wait_for_lease = true
   }
 
   # Red 2: datos (IP estática 192.168.100.10 por cloud-init)
   network_interface {
     network_id = libvirt_network.red-datos.id
+    mac        = "52:54:00:aa:00:02"
   }
 
   disk { volume_id = libvirt_volume.web-disk.id }
