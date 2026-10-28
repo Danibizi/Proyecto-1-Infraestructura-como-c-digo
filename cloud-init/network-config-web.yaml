@@ -1,10 +1,14 @@
 version: 2
 ethernets:
-  # Red NAT por DHCP (ruta por defecto y salida a internet)
-  enp1s0:
+  nat:
+    match:
+      macaddress: "52:54:00:aa:00:01"
+    set-name: nat0
     dhcp4: true
-  # Red de datos aislada: IP estática y sin gateway
-  enp2s0:
+  datos:
+    match:
+      macaddress: "52:54:00:aa:00:02"
+    set-name: datos0
     dhcp4: false
     addresses:
       - 192.168.100.10/24
