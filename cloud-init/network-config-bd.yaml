@@ -1,0 +1,10 @@
+version: 2
+ethernets:
+  # Red NAT por DHCP (ruta por defecto y salida a internet)
+  enp1s0:
+    dhcp4: true
+  # Red de datos aislada: IP estática y sin gateway
+  enp2s0:
+    dhcp4: false
+    addresses:
+      - 192.168.100.11/24
