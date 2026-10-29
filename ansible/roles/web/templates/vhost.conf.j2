@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+    ServerName {{ web_nombre }}
+    DocumentRoot {{ web_app_dir }}
+
+    <Directory {{ web_app_dir }}>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/guestbook_error.log
+    CustomLog ${APACHE_LOG_DIR}/guestbook_access.log combined
+</VirtualHost>

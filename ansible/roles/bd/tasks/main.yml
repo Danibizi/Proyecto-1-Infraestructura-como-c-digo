@@ -1,0 +1,68 @@
+---
+- name: Instalar MariaDB, git y el conector de Python
+  ansible.builtin.apt:
+    name:
+      - mariadb-server
+      - python3-pymysql
+      - git
+    state: present
+
+# Escucha solo en la IP de la red de datos
+- name: Configurar MariaDB para escuchar solo en la red de datos
+  ansible.builtin.template:
+    src: escucha-datos.cnf.j2
+    dest: /etc/mysql/mariadb.conf.d/99-escucha-datos.cnf
+    mode: "0644"
+  notify: Reiniciar MariaDB
+
+# Aplica ya el bind-address antes de seguir
+- name: Aplicar cambios pendientes
+  ansible.builtin.meta: flush_handlers
+
+- name: Asegurar que MariaDB está arrancado y habilitado
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Crear la base de datos
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    encoding: utf8mb4
+    state: present
+    login_unix_socket: "{{ bd_socket }}"
+
+# El usuario solo puede conectarse desde la IP del servidor web
+- name: Crear el usuario de la aplicación (solo desde web)
+  community.mysql.mysql_user:
+    name: "{{ db_user }}"
+    host: "{{ ip_web_datos }}"
+    password: "{{ db_password }}"
+    update_password: on_create
+    priv: "{{ db_name }}.*:ALL"
+    state: present
+    login_unix_socket: "{{ bd_socket }}"
+
+# schema.sql viene en el repo de la aplicación
+- name: Descargar la aplicación (para obtener schema.sql)
+  ansible.builtin.git:
+    repo: "{{ app_repo_url }}"
+    dest: "{{ bd_app_dir }}"
+    update: false
+
+# Idempotencia: solo se importa si la base de datos no tiene tablas
+- name: Comprobar si las tablas ya existen
+  community.mysql.mysql_query:
+    login_db: "{{ db_name }}"
+    login_unix_socket: "{{ bd_socket }}"
+    query: SHOW TABLES
+  register: tablas
+  changed_when: false
+
+- name: Crear las tablas de la aplicación
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    state: import
+    target: "{{ bd_app_dir }}/schema.sql"
+    login_unix_socket: "{{ bd_socket }}"
+  when: tablas.query_result[0] | length == 0

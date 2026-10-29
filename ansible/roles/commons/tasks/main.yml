@@ -1,0 +1,14 @@
+---
+- name: Actualizar caché de apt
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Actualizar todos los paquetes del sistema
+  ansible.builtin.apt:
+    upgrade: dist
+
+- name: Instalar paquetes comunes
+  ansible.builtin.apt:
+    name: "{{ paquetes_comunes }}"
+    state: present

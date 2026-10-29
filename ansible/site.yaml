@@ -1,0 +1,19 @@
+---
+- name: Configuración común
+  hosts: all
+  become: true
+  roles:
+    - commons
+
+# bd va antes que web: la aplicación necesita la base de datos lista
+- name: Servidor de base de datos
+  hosts: servidores_bd
+  become: true
+  roles:
+    - bd
+
+- name: Servidor web
+  hosts: servidores_web
+  become: true
+  roles:
+    - web

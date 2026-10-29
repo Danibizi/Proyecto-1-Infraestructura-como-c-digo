@@ -1,0 +1,2 @@
+bd_socket: /run/mysqld/mysqld.sock
+bd_app_dir: /opt/guestbook_php
