@@ -40,3 +40,11 @@ ssh debian@IP
 # !Aviso!
 
 Se debera tener tu clave publica configurada en `cloud-init/user-data-web.yaml` al igual que con bd.
+
+
+## Paso 4: Aplicamos el playbook
+
+Ejecutamos el playbook con `ansible-play ansible/site.yaml`
+
+Y una vez ejecutado,tendremos el servidor web corriendo junto al bd,pudiendo hacer publicaciones.
+
