@@ -1,0 +1,14 @@
+version: 2
+ethernets:
+  nat:
+    match:
+      macaddress: "52:54:00:aa:00:03"
+    set-name: nat0
+    dhcp4: true
+  datos:
+    match:
+      macaddress: "52:54:00:aa:00:04"
+    set-name: datos0
+    dhcp4: false
+    addresses:
+      - 192.168.100.13/24

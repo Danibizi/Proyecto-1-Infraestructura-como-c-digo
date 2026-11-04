@@ -1,0 +1,28 @@
+---
+- name: Instalar el servidor NFS
+  ansible.builtin.apt:
+    name: nfs-kernel-server
+    state: present
+
+- name: Crear el directorio que se exporta
+  ansible.builtin.file:
+    path: "{{ nas_export_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Exportar el directorio solo a la IP de web
+  ansible.builtin.template:
+    src: guestbook.exports.j2
+    dest: /etc/exports.d/guestbook.exports
+    mode: "0644"
+  notify: Recargar exports
+
+- name: Asegurar que NFS está arrancado y habilitado
+  ansible.builtin.service:
+    name: nfs-server
+    state: started
+    enabled: true
+
+# El export tiene que estar activo antes de que web lo monte
+- name: Aplicar cambios pendientes
+  ansible.builtin.meta: flush_handlers
