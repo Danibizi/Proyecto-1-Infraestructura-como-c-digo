@@ -121,13 +121,14 @@ resource "libvirt_domain" "nas" {
   # Red 1: NAT con DHCP
   network_interface {
     network_id     = libvirt_network.red-nat.id
-    mac 	   = "52:54:00:aa:00:04"
+    mac 	   = "52:54:00:aa:00:03"
     wait_for_lease = true
   }
 
   # Red 2: datos (IP estática 192.168.100.13 por cloud-init)
   network_interface {
     network_id = libvirt_network.red-datos.id
+    mac 	   = "52:54:00:aa:00:04"
 
   }
 
