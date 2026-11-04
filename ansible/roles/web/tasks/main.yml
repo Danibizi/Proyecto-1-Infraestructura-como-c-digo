@@ -9,7 +9,16 @@
       - git
       - mariadb-client
       - php-mbstring
+      - nfs-common
     state: present
+
+- name: Montar el directorio de la aplicación desde nas
+  ansible.posix.mount:
+    src: "{{ ip_nas_datos }}:{{ nas_export_dir }}"
+    path: "{{ web_app_dir }}"
+    fstype: nfs
+    opts: defaults,_netdev
+    state: mounted
 
 - name: Descargar la aplicación
   ansible.builtin.git:
