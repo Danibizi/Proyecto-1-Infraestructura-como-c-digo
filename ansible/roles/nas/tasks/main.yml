@@ -10,6 +10,12 @@
     state: directory
     mode: "0755"
 
+- name: Crear el directorio /etc/exports.d
+  ansible.builtin.file:
+    path: /etc/exports.d
+    state: directory
+    mode: "0755"
+
 - name: Exportar el directorio solo a la IP de web
   ansible.builtin.template:
     src: guestbook.exports.j2
