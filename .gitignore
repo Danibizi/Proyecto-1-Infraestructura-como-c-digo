@@ -1,0 +1,22 @@
+# OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Discos e imágenes
+*.qcow2
+*.iso
+
+# Ignorar la carpeta de binarios de OpenTofu/Terraform
+**/.terraform/
+
+# Ignorar los archivos de estado (¡MUY IMPORTANTE por seguridad!)
+**/*.tfstate
+**/*.tfstate.backup
+
+# Opcional: Ignorar el archivo de lock si prefieres no compartirlo (común en entornos locales)
+**/.terraform.lock.hcl
+
+terraform.tfstate
+ansible/hosts
