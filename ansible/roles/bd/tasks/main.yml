@@ -32,16 +32,17 @@
     state: present
     login_unix_socket: "{{ bd_socket }}"
 
-# El usuario solo puede conectarse desde la IP del servidor web
-- name: Crear el usuario de la aplicación (solo desde web)
+# El usuario solo puede conectarse desde las IP de los servidores web
+- name: Crear el usuario de la aplicación (solo desde los servidores web)
   community.mysql.mysql_user:
     name: "{{ db_user }}"
-    host: "{{ ip_web_datos }}"
+    host: "{{ item }}"
     password: "{{ db_password }}"
     update_password: on_create
     priv: "{{ db_name }}.*:ALL"
     state: present
     login_unix_socket: "{{ bd_socket }}"
+  loop: "{{ ips_web_datos }}"
 
 # schema.sql viene en el repo de la aplicación
 - name: Descargar la aplicación (para obtener schema.sql)
