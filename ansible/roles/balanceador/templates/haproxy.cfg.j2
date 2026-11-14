@@ -1,0 +1,30 @@
+# Generado por Ansible
+global
+    log /dev/log local0
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  forwardfor
+    timeout connect 5s
+    timeout client  30s
+    timeout server  30s
+
+frontend guestbook
+    bind *:80
+    default_backend servidores_web
+
+backend servidores_web
+    # Reparto estático por turnos
+    balance static-rr
+    # Persistencia: cada navegador sigue en el mismo servidor (sesión PHP)
+    cookie SERVIDOR insert indirect nocache
+    # Cabecera para ver qué servidor ha respondido
+    http-response set-header X-Servidor %s
+{% for ip in ips_web_datos %}
+    server web{{ loop.index }} {{ ip }}:80 check cookie web{{ loop.index }}
+{% endfor %}

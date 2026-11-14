@@ -23,3 +23,11 @@
   become: true
   roles:
     - web
+
+
+# El balanceador va después de web: necesita los servidores web funcionando
+- name: Balanceador de carga
+  hosts: servidores_balanceador
+  become: true
+  roles:
+    - balanceador
