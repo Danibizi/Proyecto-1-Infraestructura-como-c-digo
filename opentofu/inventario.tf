@@ -6,5 +6,7 @@ resource "local_file" "inventario" {
     ip_web = try(libvirt_domain.web.network_interface[0].addresses[0], "")
     ip_bd  = try(libvirt_domain.bd.network_interface[0].addresses[0], "")
     ip_nas  = try(libvirt_domain.nas.network_interface[0].addresses[0], "")
+    ip_web2        = try(libvirt_domain.web2.network_interface[0].addresses[0], "")
+    ip_balanceador = try(libvirt_domain.balanceador.network_interface[0].addresses[0], "")
   })
 }

@@ -7,5 +7,10 @@ output "ips" {
     bd2 = "192.168.100.11" #Estatica
     nas1 = libvirt_domain.nas.network_interface[0].addresses[0]
     nas2 = "192.168.100.13"
+    web2_1        = libvirt_domain.web2.network_interface[0].addresses[0]
+    web2_2        = "192.168.100.14" #Estatica
+    balanceador1  = libvirt_domain.balanceador.network_interface[0].addresses[0]
+    balanceador2  = "192.168.100.15" #Estatica
+
   }
 }
