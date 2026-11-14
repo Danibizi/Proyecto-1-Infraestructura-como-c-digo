@@ -20,11 +20,13 @@
     opts: defaults,_netdev
     state: mounted
 
+# Las dos web comparten el NFS: se clona de una en una para no pisarse
 - name: Descargar la aplicación
   ansible.builtin.git:
     repo: "{{ app_repo_url }}"
     dest: "{{ web_app_dir }}"
     update: false
+  throttle: 1
 
 # Datos de conexión a la base de datos, generados con plantilla
 - name: Generar config.php
@@ -34,6 +36,7 @@
     owner: root
     group: www-data
     mode: "0640"
+  throttle: 1
 
 - name: Crear el virtual host
   ansible.builtin.template:
