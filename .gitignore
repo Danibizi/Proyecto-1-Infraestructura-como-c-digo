@@ -20,3 +20,4 @@ crash.log
 
 terraform.tfstate
 ansible/hosts
+cookies.txt

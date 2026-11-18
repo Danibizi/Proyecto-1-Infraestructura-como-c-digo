@@ -15,6 +15,7 @@ ip_nas_datos: 192.168.100.13
 #Ruta donde se exportara
 
 nas_export_dir: /srv/nfs/guestbook
+nas_backup_dir: /srv/nfs/backups
 
 # Aplicación (pon la URL del repo de guestbook_php de tu enunciado)
 app_repo_url: https://github.com/josedom24/guestbook_php.git
