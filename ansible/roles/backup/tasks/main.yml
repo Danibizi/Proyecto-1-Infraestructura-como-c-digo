@@ -1,0 +1,20 @@
+---
+- name: Instalar el cliente NFS
+  ansible.builtin.apt:
+    name: nfs-common
+    state: present
+
+# Las copias se guardan en nas, no en la misma máquina que los datos
+- name: Montar el directorio de copias desde nas
+  ansible.posix.mount:
+    src: "{{ ip_nas_datos }}:{{ nas_backup_dir }}"
+    path: "{{ bd_backup_dir }}"
+    fstype: nfs
+    opts: defaults,_netdev
+    state: mounted
+
+- name: Script de copia de seguridad
+  ansible.builtin.template:
+    src: copia-guestbook.sh.j2
+    dest: /usr/local/sbin/copia-guestbook.sh
+    mode: "0750"
