@@ -1,2 +1,6 @@
 bd_socket: /run/mysqld/mysqld.sock
 bd_app_dir: /opt/guestbook_php
+
+# Copias de seguridad
+bd_backup_dir: /var/backups/guestbook
+backup_dias: 7

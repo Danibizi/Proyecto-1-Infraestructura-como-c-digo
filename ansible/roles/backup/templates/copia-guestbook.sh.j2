@@ -1,0 +1,14 @@
+#!/bin/bash
+# Copia de seguridad de la base de datos (generado por Ansible)
+set -euo pipefail
+
+DESTINO={{ bd_backup_dir }}
+FICHERO="$DESTINO/{{ db_name }}-$(date +%Y%m%d-%H%M%S).sql.gz"
+
+# Volcado consistente sin bloquear las tablas, comprimido
+mysqldump --single-transaction {{ db_name }} | gzip > "$FICHERO"
+
+# Borra las copias de más de {{ backup_dias }} días
+find "$DESTINO" -name '{{ db_name }}-*.sql.gz' -mtime +{{ backup_dias }} -delete
+
+echo "Copia creada: $FICHERO"

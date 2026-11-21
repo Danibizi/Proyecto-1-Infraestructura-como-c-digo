@@ -10,6 +10,12 @@
     state: directory
     mode: "0755"
 
+- name: Crear el directorio de las copias de seguridad
+  ansible.builtin.file:
+    path: "{{ nas_backup_dir }}"
+    state: directory
+    mode: "0750"
+
 - name: Crear el directorio /etc/exports.d
   ansible.builtin.file:
     path: /etc/exports.d
