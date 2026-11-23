@@ -1,0 +1,21 @@
+#!/bin/bash
+# Restaura la base de datos desde una copia (generado por Ansible)
+# Uso: restaura-guestbook.sh [fichero]   (sin fichero, usa la copia más reciente)
+set -euo pipefail
+
+DESTINO={{ bd_backup_dir }}
+
+if [ $# -eq 1 ]; then
+    COPIA="$1"
+else
+    COPIA=$(ls -1t "$DESTINO"/{{ db_name }}-*.sql.gz | head -1)
+fi
+
+if [ ! -f "$COPIA" ]; then
+    echo "No existe la copia: $COPIA"
+    exit 1
+fi
+
+echo "Restaurando $COPIA en la base de datos {{ db_name }}..."
+gunzip -c "$COPIA" | mysql {{ db_name }}
+echo "Restauración completada"

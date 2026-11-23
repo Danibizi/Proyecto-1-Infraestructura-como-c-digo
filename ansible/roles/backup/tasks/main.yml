@@ -38,3 +38,10 @@
     name: copia-guestbook.timer
     enabled: true
     state: started
+
+
+- name: Script de restauración
+  ansible.builtin.template:
+    src: restaura-guestbook.sh.j2
+    dest: /usr/local/sbin/restaura-guestbook.sh
+    mode: "0750"
