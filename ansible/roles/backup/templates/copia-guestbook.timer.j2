@@ -1,9 +1,10 @@
 [Unit]
-Description=Copia de seguridad de la base de datos {{ db_name }}
-# Solo se ejecuta si el directorio de nas está montado
-RequiresMountsFor={{ bd_backup_dir }}
-After=mariadb.service
+Description=Copia diaria de la base de datos {{ db_name }}
 
-[Service]
-Type=oneshot
-ExecStart=/usr/local/sbin/copia-guestbook.sh
+[Timer]
+OnCalendar={{ backup_hora }}
+# Si la máquina estaba apagada a esa hora, la hace al arrancar
+Persistent=true
+
+[Install]
+WantedBy=timers.target
