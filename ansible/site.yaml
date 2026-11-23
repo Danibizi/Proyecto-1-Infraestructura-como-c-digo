@@ -31,3 +31,10 @@
   become: true
   roles:
     - balanceador
+
+# backup va después de nas: necesita el directorio de copias exportado
+- name: Copias de seguridad de la base de datos
+  hosts: servidores_bd
+  become: true
+  roles:
+    - backup
